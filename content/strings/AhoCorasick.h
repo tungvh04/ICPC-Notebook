@@ -1,7 +1,7 @@
 /**
  * Author: FireGhost
  * Date: 2022-06-12
- * License: CC0
+ * Description: ez pz
  */
 int nxt[N][10], suf[N], tme;
 void add(const vector<int> &vec) {
