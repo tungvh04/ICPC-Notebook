@@ -1,56 +1,70 @@
 /**
- * Author: Chen Xing
- * Date: 2009-10-13
- * License: CC0
- * Source: N/A
- * Description: Fast bipartite matching algorithm. Graph $g$ should be a list
- * of neighbors of the left partition, and $btoa$ should be a vector full of
- * -1's of the same size as the right partition. Returns the size of
- * the matching. $btoa[i]$ will be the match for vertex $i$ on the right side,
- * or $-1$ if it's not matched.
- * Usage: vi btoa(m, -1); hopcroftKarp(g, btoa);
- * Time: O(\sqrt{V}E)
- * Status: stress-tested by MinimumVertexCover, and tested on oldkattis.adkbipmatch and SPOJ:MATCHING
+ * Author: FireGhost
+ * Date: 2022-11-08
+ * Description: ez pz
  */
-#pragma once
 
-bool dfs(int a, int L, vector<vi>& g, vi& btoa, vi& A, vi& B) {
-  if (A[a] != L) return 0;
-  A[a] = -1;
-  for (int b : g[a]) if (B[b] == L + 1) {
-    B[b] = 0;
-    if (btoa[b] == -1 || dfs(btoa[b], L + 1, g, btoa, A, B))
-      return btoa[b] = a, 1;
-  }
-  return 0;
-}
-int hopcroftKarp(vector<vi>& g, vi& btoa) {
-  int res = 0;
-  vi A(g.size()), B(btoa.size()), cur, next;
-  for (;;) {
-    fill(all(A), 0); fill(all(B), 0); cur.clear();
-    /// Find the starting nodes for BFS (i.e. layer 0).
-    for (int a : btoa) if(a != -1) A[a] = -1;
-    rep(a,0,sz(g)) if(A[a] == 0) cur.emb(a);
-    /// Find all layers using bfs.
-    for (int lay = 1;; lay++) {
-      bool islast = 0;
-      next.clear();
-      for (int a : cur) for (int b : g[a]) {
-        if (btoa[b] == -1) {
-          B[b] = lay;
-          islast = 1;
-        } else if (btoa[b] != a && !B[b]) {
-          B[b] = lay;
-          next.emb(btoa[b]);
-        }
-      }
-      if (islast) break;
-      if (next.empty()) return res;
-      for (int a : next) A[a] = lay;
-      cur.swap(next);
-    }
-    /// Use DFS to scan for augmenting paths.
-    rep(a,0,sz(g)) res += dfs(a, 0, g, btoa, A, B);
-  }
-}
+// Usage:
+//   HopcroftKarp mat(m, n);
+//   - X[1..m] and Y[1..n]  // 1-based
+//   mat.addEdge(u, v)      // X[u] -> Y[v]
+//   mat.MaxMatching() --> maximum matching X and Y
+//
+//  Note:
+//  - Only Bipartite Graph
+//
+// Time: O(sqrt(V) E)
+struct HopcroftKarp {
+	int m, n; // X : 1..m, Y : 1..n
+	vector<vector<int>> g;
+	vector<int> dist, mX, mY, q;
+	vector<bool> Select[2]; // remove if not using Konig
+	HopcroftKarp(int m = 0, int n = 0)
+		: m(m), n(n), dist(m + 1), mX(m + 1, 0), mY(n + 1, 0), g(m + 1), q(m + 1) {}
+
+	void addEdge(int u, int v) { g[u].push_back(v); }
+	int MaxMatching() {
+		int cnt = 0;
+		while (bfs())
+			for (int i = 1; i <= m; ++i)
+				if (!mX[i] && dfs(i)) ++cnt;
+		return cnt;
+	}
+	void Konig(); // remove if not using Konig
+
+private:
+	bool bfs() {
+		int ql = 0, qr = 0;
+		for (int i = 1; i <= m; ++i) {
+			if (!mX[i]) {
+				dist[i] = 0;
+				q[qr++] = i;
+			}
+			else dist[i] = -1;
+		}
+
+		dist[0] = -1;
+		while (ql < qr) {
+			int u = q[ql++];
+			for (int v : g[u]) {
+				if (dist[mY[v]] == -1) {
+					dist[mY[v]] = dist[u] + 1;
+					q[qr++]		= mY[v];
+				}
+			}
+		}
+		return dist[0] != -1;
+	}
+	bool dfs(int u) {
+		if (u == 0) return true;
+		for (int v : g[u]) {
+			if (dist[mY[v]] == dist[u] + 1 && dfs(mY[v])) {
+				mX[u] = v, mY[v] = u;
+				dist[u] = -1;
+				return true;
+			}
+		}
+		dist[u] = -1;
+		return false;
+	}
+};
