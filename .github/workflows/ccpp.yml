@@ -20,7 +20,3 @@ jobs:
       with:
         name: PDF
         path: build/hcmus.pdf
-    - name: Run compiles
-      run: make test-compiles
-    - name: Run stress tests
-      run: make test
