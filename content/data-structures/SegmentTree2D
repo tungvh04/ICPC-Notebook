@@ -1,3 +1,9 @@
+/**
+ * Author: FireGhost
+ * Date: 2022-11-08
+ * Description: ez pz
+ */
+
 /// O(Q * log^2 N)
 /** only Segment Tree 2D update + query when
     update 1 cell -> query range
@@ -5,20 +11,11 @@
     update range max_value -> query range max_value
     update range add_value -> query range sum_value
 */
-/// https://lqdoj.edu.vn/problem/dhbb2022table
-#include <bits/stdc++.h>
-#define FOR(i,l,r) for(int i=(l); i<=(r); ++i)
-#define REP(i,l,r) for(int i=(l); i<(r); ++i)
-#define FORD(i,r,l) for(int i=(r); i>=(l); --i)
-#define REPD(i,r,l) for(int i=(r)-1; i>=(l); --i)
-using namespace std;
-
 struct SegmentTree2D {
     int nx, ny;
     vector<vector<long long>> isum, lazy, lazyx, lazyy;
     vector<int> Ux, Uy;
     vector<int> leftx, rightx, lefty, righty;
-
     void init(int _nx, int _ny) {
         nx = _nx; ny = _ny;
         int sz_x = 1 << (33 - __builtin_clz(nx)), sz_y = 1 << (33 - __builtin_clz(ny));
@@ -86,17 +83,12 @@ struct SegmentTree2D {
         return tmp_sum;
     }
 };
-
 long long a[505][505];
-
 long long querysum(int xl, int xr, int yl, int yr) {
     return a[xr][yr] - a[xl - 1][yr] - a[xr][yl - 1] + a[xl - 1][yl - 1];
 }
-
 SegmentTree2D seg;
-
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
     int m, n, q;
     cin >> m >> n >> q;
