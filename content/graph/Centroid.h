@@ -1,3 +1,9 @@
+/**
+ * Author: FireGhost
+ * Date: 2022-11-08
+ * Description: ez pz
+ */
+
 int get_sz(int u, int p) {
 	sz[u] = 1;
 	for (int v : g[u])
