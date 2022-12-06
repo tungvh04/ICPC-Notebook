@@ -10,8 +10,8 @@ int m, n, p, deg[N];
 char c[N][N];
 int match[N][N];
 void add(int x, int y, int cx, int cy) {
-    // cạnh (x, y) tô màu cx
-    // cạnh (y, w) tô màu cy
+    // canh (x, y) to mau cx
+    // canh (y, w) to mau cy
     int w = match[y][cx];
     match[x][cx] = y;
     match[y][cx] = x;
