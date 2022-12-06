@@ -1,46 +1,61 @@
 /**
- * Author: Simon Lindholm
- * Date: 2020-10-12
- * License: CC0
- * Source: https://en.wikipedia.org/wiki/Misra_%26_Gries_edge_coloring_algorithm
- * https://codeforces.com/blog/entry/75431 for the note about bipartite graphs.
- * Description: Given a simple, undirected graph with max degree $D$, computes a
- * $(D + 1)$-coloring of the edges such that no neighboring edges share a color.
- * ($D$-coloring is NP-hard, but can be done for bipartite graphs by repeated matchings of
- * max-degree nodes.)
- * Time: O(NM)
- * Status: stress-tested, tested on kattis:gamescheduling
+ * Author: FireGhost
+ * Date: 2022-11-08
+ * Description: ez pz
  */
-#pragma once
 
-vi edgeColoring(int N, vector<pii> eds) {
-  vi cc(N + 1), ret(sz(eds)), fan(N), free(N), loc;
-  for (pii e : eds) ++cc[e.first], ++cc[e.second];
-  int u, v, ncols = *max_element(all(cc)) + 1;
-  vector<vi> adj(N, vi(ncols, -1));
-  for (pii e : eds) {
-    tie(u, v) = e;
-    fan[0] = v;
-    loc.assign(ncols, 0);
-    int at = u, end = u, d, c = free[u], ind = 0, i = 0;
-    while (d = free[v], !loc[d] && (v = adj[u][d]) != -1)
-      loc[d] = ++ind, cc[ind] = d, fan[ind] = v;
-    cc[loc[d]] = c;
-    for (int cd = d; at != -1; cd ^= c ^ d, at = adj[at][cd])
-      swap(adj[at][cd], adj[end = at][cd ^ c ^ d]);
-    while (adj[fan[i]][d] != -1) {
-      int left = fan[i], right = fan[++i], e = cc[i];
-      adj[u][e] = left;
-      adj[left][e] = u;
-      adj[right][e] = -1;
-      free[right] = e;
+// task : given a bipartite graph
+// ask : color the edges so that no 2 edges that share a vertex have the same color
+int m, n, p, deg[N];
+char c[N][N];
+int match[N][N];
+void add(int x, int y, int cx, int cy) {
+    // cạnh (x, y) tô màu cx
+    // cạnh (y, w) tô màu cy
+    int w = match[y][cx];
+    match[x][cx] = y;
+    match[y][cx] = x;
+
+    if (w == 0) match[y][cy] = 0;
+    else add(y, w, cy, cx);
+}
+
+void add(int x, int y) {
+    int cx = find(match[x] + 1, match[x] + p + 1, 0) - match[x];
+    int cy = find(match[y] + 1, match[y] + p + 1, 0) - match[y];
+    if (cx == cy) {
+        match[x][cx] = y;
+        match[y][cx] = x;
     }
-    adj[u][d] = fan[i];
-    adj[fan[i]][d] = u;
-    for (int y : {fan[0], u, end})
-      for (int& z = free[y] = 0; adj[y][z] != -1; z++);
-  }
-  rep(i,0,sz(eds))
-    for (tie(u, v) = eds[i]; adj[u][ret[i]] != v;) ++ret[i];
-  return ret;
+    else add(x, y, cx, cy);
+}
+
+int a[N][N];
+int main() {
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
+    cin >> m >> n;
+    for (int i = 1; i <= m; ++i) {
+        cin >> (c[i] + 1);
+        for (int j = 1; j <= n; ++j)
+            if (c[i][j] == '1') {
+                ++deg[i], ++deg[j + m];
+            }
+    }
+
+    p = *max_element(deg + 1, deg + m + n + 1);
+    for (int i = 1; i <= m; ++i)
+        for (int j = 1; j <= n; ++j)
+            if (c[i][j] == '1') {
+                add(i, j + m);
+            }
+
+    for (int u = 1, v; u <= m; ++u)
+        for (int color = 1; color <= p; ++color)
+            if (v = match[u][color])
+                a[u][v - m] = color;
+
+    cout << p << '\n';
+    for (int i = 1; i <= m; ++i)
+        for (int j = 1; j <= n; ++j)
+            cout << a[i][j] << " \n"[j == n];
 }
