@@ -5,8 +5,6 @@
  * Time: O(n)
  * Status: stress-tested
  */
-#pragma once
-
 int L = 0, R = 0;
 Z[0] = n;
 for (int i = 1; i < n; i++) {
