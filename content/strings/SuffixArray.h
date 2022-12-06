@@ -3,7 +3,7 @@
  * Date: 2022-06-12
  * License: Unknown
  * Description: Builds suffix array for a string.
-#pragma once
+*/
 
 struct SuffixArray {
     int n;
