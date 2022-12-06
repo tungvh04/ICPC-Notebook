@@ -7,15 +7,24 @@
  */
 #pragma once
 
-vi Z(const string& S) {
-  vi z(sz(S));
-  int l = -1, r = -1;
-  rep(i,1,sz(S)) {
-    z[i] = i >= r ? 0 : min(r - i, z[i - l]);
-    while (i + z[i] < sz(S) && S[i + z[i]] == S[z[i]])
-      z[i]++;
-    if (i + z[i] > r)
-      l = i, r = i + z[i];
-  }
-  return z;
+int L = 0, R = 0;
+Z[0] = n;
+for (int i = 1; i < n; i++) {
+   if (i > R)
+   {
+      L = R = i;
+      while (R < n && S[R] == S[R - L]) R++;
+      Z[i] = R - L; R--;
+   }
+   else
+   {
+      int k = i - L;
+      if (Z[k] < R - i + 1) Z[i] = Z[k];
+      else
+      {
+          L = i;
+          while (R < n && S[R] == S[R - L]) R++;
+          Z[i] = R - L; R--;
+      }
+   }
 }
