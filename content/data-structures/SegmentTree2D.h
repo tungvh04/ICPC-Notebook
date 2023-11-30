@@ -1,7 +1,7 @@
 /**
  * Author: Monarchuwu
  * Date: 2023-11-30
- * Description: $\mathcall{O}(Q\times\log^2 N)$     \\
+ * Description: $\mathcal{O}(Q\times\log^2 N)$     \\
  * only Segment Tree 2D update + query when         \\
  * update 1 cell -> query range                     \\
  * update range -> query 1 cell                     \\
