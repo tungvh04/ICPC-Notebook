@@ -1,15 +1,14 @@
 /**
  * Author: Monarchuwu
  * Date: 2023-11-30
- * License: CC0
- * Description:
- * only Segment Tree 2D update + query when:        \\
- * update 1 cell -> query range                     \\
- * update range -> query 1 cell                     \\
- * update range max_value -> query range max_value  \\
- * update range add_value -> query range sum_value
+ * Description: read the comments
  * Time: $\mathcal{O}(Q\times\log^2 N)$
  */
+// only Segment Tree 2D update + query when:
+// update 1 cell -> query range
+// update range -> query 1 cell
+// update range max_value -> query range max_value
+// update range add_value -> query range sum_value
 struct SegmentTree2D {
   int nx, ny;
   vector<vector<long long>> isum, lazy, lazyx, lazyy;
