@@ -77,14 +77,9 @@
     $$S(n,1) = S(n,n) = 1$$
     $$S(n,k) = \frac{1}{k!}\sum_{j=0}^k (-1)^{k-j}\binom{k}{j}j^n$$
 
-  \subsection{Bell numbers}
-    Total number of partitions of $n$ distinct elements. $B(n) =$
-    $1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, \dots$. For $p$ prime,
-    \[ B(p^m+n)\equiv mB(n)+B(n+1) \pmod{p} \]
-
   \subsection{Catalan numbers}
-    \[ C_0=1,\ C_{n+1} = \frac{2(2n+1)}{n+2}C_n,\ C_{n+1}=\sum C_iC_{n-i} \]
     \[ C_n=\frac{1}{n+1}\binom{2n}{n}= \binom{2n}{n}-\binom{2n}{n+1} = \frac{(2n)!}{(n+1)!n!} \]
+    \[ C_0=1,\ C_{n+1} = \frac{2(2n+1)}{n+2}C_n,\ C_{n+1}=\sum C_iC_{n-i} \]
     ${C_n = 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786, \dots}$
     \begin{itemize}[noitemsep]
       \item sub-diagonal monotone paths in an $n\times n$ grid.
@@ -94,6 +89,11 @@
       \item ways a convex polygon with $n+2$ sides can be cut into triangles by connecting vertices with straight lines.
       \item permutations of $[n]$ with no 3-term increasing subseq.
     \end{itemize}
+
+  \subsection{Bell numbers}
+    Total number of partitions of $n$ distinct elements. $B(n) =$
+    $1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, \dots$. For $p$ prime,
+    \[ B(p^m+n)\equiv mB(n)+B(n+1) \pmod{p} \]
 
   \subsection{Labeled unrooted trees}
     \# on $n$ vertices: $n^{n-2}$ \\
