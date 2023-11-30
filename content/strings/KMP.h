@@ -1,35 +1,25 @@
 /**
- * Author: Johan Sannemo
- * Date: 2016-12-15
+ * Author: Monarchuwu
+ * Date: 2023-11-30
  * License: CC0
- * Description: pi[x] computes the length of the longest prefix of s that ends at x, other than s[0...x] itself (abacaba -> 0010123).
- * Can be used to find all occurrences of a string.
+ * Description: ez pz
  * Time: O(n)
- * Status: Tested on kattis:stringmatching
+ * Status: Tested on https://codeforces.com/contest/346/submission/235078151
  */
 #pragma once
 
-vi pi(const string& s) {
-  vi p(sz(s));
-  rep(i,1,sz(s)) {
-    int g = p[i-1];
-    while (g && s[i] != s[g]) g = p[g-1];
-    p[i] = g + (s[i] == s[g]);
+int p[N], nxt[N][26];
+void buildKMPTable(string s) {
+  for (int i = 1; i < s.size(); ++i) {
+    p[i] = p[i - 1];
+    while (p[i] > 0 && s[i] != s[p[i]]) p[i] = p[p[i] - 1];
+    if (s[i] == s[p[i]]) ++p[i];
   }
-  return p;
 }
-void compute_automaton(const string& s, vector<vi>& aut) {
-  vi p = pi(s);
-  aut.assign(sz(s), vi(26));
-  rep(i,0,sz(s)) rep(c,0,26)
-    if (i > 0 && s[i] != 'a' + c)
-      aut[i][c] = aut[p[i - 1]][c];
-    else
-      aut[i][c] = i + (s[i] == 'a' + c);
-}
-vi match(const string& s, const string& pat) {
-  vi p = pi(pat + '\0' + s), res;
-  rep(i,sz(p)-sz(s),sz(p))
-    if (p[i] == sz(pat)) res.emb(i - 2 * sz(pat));
-  return res;
+void buildAutomaton(string s) {
+  buildKMPTable(s);
+  nxt[0][s[0] - 'A'] = 1;
+  for (int i = 1; i < s.size(); ++i)
+    for (int c = 0; c < 26; ++c)
+      nxt[i][c] = (s[i] == ('A' + c) ? i + 1 : nxt[p[i - 1]][c]);
 }
