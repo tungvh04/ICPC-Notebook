@@ -1,16 +1,13 @@
 /**
- * Author: FireGhost
- * Date: 2022-11-08
- * Description: ez pz
+ * Author: FireGhost (edited by Monarchuwu)
+ * Date: 2023-11-30
+ * Description: O(Q * log^2 N)
+ * Usage: only Segment Tree 2D update + query when
+ *        update 1 cell -> query range
+ *        update range -> query 1 cell
+ *        update range max_value -> query range max_value
+ *        update range add_value -> query range sum_value
  */
-
-/// O(Q * log^2 N)
-/** only Segment Tree 2D update + query when
-    update 1 cell -> query range
-    update range -> query 1 cell
-    update range max_value -> query range max_value
-    update range add_value -> query range sum_value
-*/
 struct SegmentTree2D {
   int nx, ny;
   vector<vector<long long>> isum, lazy, lazyx, lazyy;
