@@ -1,6 +1,5 @@
 /**
- * Author: FireGhost
- * Edited: Monarchuwu
+ * Author: Monarchuwu
  * Date: 2023-11-30
  * Description: O(Q * log^2 N)                      \\
  * only Segment Tree 2D update + query when         \\
